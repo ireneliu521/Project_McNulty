@@ -1,0 +1,100 @@
+<html>
+<body>
+This is our credit predictor
+<br>
+
+Credit Usage:
+  <input type="number" id="credit_usage"
+         placeholder="Min: 4, max: 60"
+         min="4" max="60" />
+<br>
+
+Account Age in month:
+  <input type="number" id="cc_age"
+         placeholder="Min: 19, max: 75"
+         min="19" max="75" />
+<br>
+
+Credit History:
+  <select id="credit_history">
+    <option value="AP">All Paid</option>
+    <option value="EC">Critical/Other Existing Credit</option>
+    <option value="DP">Delayed Previously</option>
+    <option value="EP">Existing Paid</option>
+    <option value="NP">No Credits/All Paid</option>
+  </select>
+<br>
+
+Over Draft:
+  <select id="over_draft">
+    <option value="LZ">Less than zero</option>
+    <option value="GZ">Greater or equal to zero but less than 200</option>
+    <option value="G2">Greater or equal to 200</option>
+    <option value="NA">No Checking Account</option>
+  </select>
+<br>
+
+Average Credit Balance:
+  <select id="Average_Credit_Balance">
+    <option value="L1">Less than 100</option>
+    <option value="G1">Greater or equal to 100 but less than 500</option>
+    <option value="G5">Greater or equal to 500 but less than 1000</option>
+    <option value="G10">Greater or equal to 1000</option>
+    <option value="NS">No Known Savings</option>
+  </select>
+<br>
+
+  <div>
+    <button id="submit">Make prediction</button>
+  </div>
+  Our prediction is:
+  <table>
+    <tr><td>You have a</td><td id="hard_predict"></td></tr>
+    <tr><td>Probability of being mispredicted</td><td id="soft_predict"></td></tr>
+  </table>
+
+</body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script>
+
+  $('#submit').click( () => { cool(); } );
+
+  function cool(){
+    let features = {
+      'credit_usage': $('#credit_usage').val(),
+      'cc_age': $('#cc_age').val(),
+      'credit_history_critical/other existing credit': $('#credit_history').val(),
+      'credit_history_delayed previously': $('#credit_history').val(),
+      'credit_history_existing paid': $('#credit_history').val(),
+      'credit_history_no credits/all paid': $('#credit_history').val(),
+      'over_draft_less_than0': $('#over_draft').val(),
+      'over_draft_greater_than200': $('#over_draft').val(),
+      'over_draft_no checking': $('#over_draft').val(),
+      'Average_Credit_Balance_500less_than=Xless_than1000': $('#Average_Credit_Balance').val(),
+      'Average_Credit_Balance_less_than100': $('#Average_Credit_Balance').val(),
+      'Average_Credit_Balance_greater_than1000': $('#Average_Credit_Balance').val(),
+      'Average_Credit_Balance_no known savings': $('#Average_Credit_Balance').val()
+    }
+    console.log(features);
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      url: "/predict",  // Replace with URL of POST handler
+      dataType: "json",
+      async: true,
+      data: JSON.stringify(features),
+      success: (result) => {
+        $('#hard_predict').html(result['prediction'] ? 'bad credit' : 'good credit');
+        $('#soft_predict').html(result['prob_survived']);
+      },
+      error: (result) => {
+        alert('Something is missing...');
+      }
+    })
+
+  }
+
+  </script>
+
+</html>
