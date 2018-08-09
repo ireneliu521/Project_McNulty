@@ -1,1 +1,3 @@
-# Project_McNulty
+# Project McNulty - Credit Risk Evaluation
+
+With the technology nowadays, it becomes easier for banks to collect the information of its customers and make good of it. One of the things that banks can do to avoid losing big is to build a comprehensive credit risk management process.  The objective of this project is to help making the process of managing credit risk easier for banks. I utilized several machine learning algorithms in Python and trained it on the dataset which contains 1,000 data points and is accessible on UCI . To build a model which can predict the good/bad credit consumers will be my final goal. 
